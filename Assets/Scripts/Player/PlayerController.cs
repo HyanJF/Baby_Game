@@ -13,4 +13,9 @@ public class PlayerController : MonoBehaviour
     public Transform cameraPlayer;
 
     #endregion
+
+    private void start()
+    {
+
+    }
 }
