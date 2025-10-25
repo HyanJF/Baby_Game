@@ -301,7 +301,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 949aa587fce3a914ebdce924b22213d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -691,8 +691,8 @@ MonoBehaviour:
   gravity: -9.81
   maxStamina: 100
   stamina: 0
-  staminaDrainRate: 20
-  staminaRegenRate: 15
+  staminaDrainRate: 15
+  staminaRegenRate: 10
   staminaSlowRegenRate: 5
   mouseSensitivity: 1
   verticalClamp: 30
@@ -821,7 +821,7 @@ MonoBehaviour:
   detectionMask:
     serializedVersion: 2
     m_Bits: 8
-  maxEnergy: 200
+  maxEnergy: 150
   currentEnergy: 0
   drainRate: 7
   rechargeRate: 2
@@ -919,7 +919,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 949aa587fce3a914ebdce924b22213d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
