@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     #region Parameters
+    [Header("Components")]
+    public PlayerDetector pD;
+
     [Header("Motion")]
     public float walkSpeed = 5f;
     public float runSpeed = 10f;
@@ -19,6 +22,9 @@ public class PlayerController : MonoBehaviour
 
     private bool canRun = true;
     private bool isRunning = false;
+
+    [Header("Inhaler Inventory")]
+    public int inhalersStored = 0;
 
     [Header("Camera")]
     public float mouseSensitivity = 2f;
@@ -76,7 +82,7 @@ public class PlayerController : MonoBehaviour
         moveDirection = move * currentSpeed;
         controller.Move(moveDirection * Time.deltaTime);
 
-        //Resitencia
+        //Resistencia
         if (isRunning && moveInput.magnitude > 0f)
         {
             stamina -= staminaDrainRate * Time.deltaTime;
@@ -121,6 +127,11 @@ public class PlayerController : MonoBehaviour
 
         // mano y linterna efecto
         HandleHandAndFlashlightBob();
+    }
+
+    public void AddInhaler(int amount)
+    {
+        inhalersStored += amount;
     }
 
     private void HandleHandAndFlashlightBob()
@@ -206,6 +217,22 @@ public class PlayerController : MonoBehaviour
     public void OnLook(InputAction.CallbackContext context)
     {
         lookInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        if (pD != null && pD.HasTarget())
+        {
+            pD.TryInteract(gameObject);
+        }
+        else
+        {
+            Debug.Log("No hay nada wey");
+        }
+
+        
     }
 
     #endregion

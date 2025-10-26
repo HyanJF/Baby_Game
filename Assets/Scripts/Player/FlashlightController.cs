@@ -12,8 +12,10 @@ public class FlashlightController : MonoBehaviour
     [Header("Energy Settings")]
     public float maxEnergy = 100f;
     public float currentEnergy;
-    public float drainRate = 10f;
-    public float rechargeRate = 5f;
+    public float drainRate = 15f;
+
+    [Header("Battery Inventory")]
+    public int batteriesStored = 0;
 
     [Header("Light Settings")]
     public float maxRange = 15f;
@@ -44,10 +46,6 @@ public class FlashlightController : MonoBehaviour
             ConsumeEnergy();
             DetectObjectsInCone();
         }
-        else
-        {
-            RechargeEnergy();
-        }
 
         UpdateLightProperties();
     }
@@ -63,14 +61,27 @@ public class FlashlightController : MonoBehaviour
             Debug.LogWarning("No hay energía");
         }
     }
-
-    private void RechargeEnergy()
+    public void UseBattery()
     {
-        if (currentEnergy < maxEnergy)
+        if (batteriesStored > 0 && currentEnergy < maxEnergy)
         {
-            currentEnergy += rechargeRate * Time.deltaTime;
-            currentEnergy = Mathf.Clamp(currentEnergy, 0f, maxEnergy);
+            batteriesStored--;
+            currentEnergy = maxEnergy;
+            Debug.Log($"Usó una batería. Energía recargada a {currentEnergy}. Baterías restantes: {batteriesStored}");
         }
+        else if (currentEnergy == maxEnergy)
+        {
+            Debug.Log("La linterna ya está llena");
+        }
+        else
+        {
+            Debug.Log("No hay baterías");
+        }
+    }
+
+    public void AddBattery(int amount)
+    {
+        batteriesStored += amount;
     }
 
     private void UpdateLightProperties()
@@ -110,13 +121,10 @@ public class FlashlightController : MonoBehaviour
     {
         if (!flashlightTip || !flashlight.enabled) return;
 
-        // Color según detección
         Gizmos.color = detectedThisFrame ? Color.red : Color.green;
-
-        // Sphere del rango
         Gizmos.DrawWireSphere(flashlightTip.position, flashlight.range);
 
-        // Cono
+        //Cono de deteccion
         Vector3 forward = flashlightTip.forward * flashlight.range;
         Vector3 rightLimit = Quaternion.Euler(0, coneAngle, 0) * forward;
         Vector3 leftLimit = Quaternion.Euler(0, -coneAngle, 0) * forward;
@@ -133,6 +141,14 @@ public class FlashlightController : MonoBehaviour
             isOn = !isOn;
             flashlight.enabled = isOn;
             Debug.Log(isOn ? "Linterna encendida" :  "Linterna apagada");
+        }
+    }
+
+    public void OnUseBattery(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            UseBattery();
         }
     }
     #endregion
